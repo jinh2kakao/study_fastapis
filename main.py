@@ -90,7 +90,7 @@ from fastapi.staticfiles import StaticFiles
 app.mount("/images", StaticFiles(directory="resources/images"))
 app.mount("/css", StaticFiles(directory="resources/css"))
 
-pass
+templates = Jinja2Templates(directory="quests")
 
 @app.get("/jina2")
 def jina2(request: Request):
@@ -115,4 +115,4 @@ def jina2(request: Request):
             }
         ]
     }
-    return templates.TemplateResponse("../quests/10_jina2.html", context)
+    return templates.TemplateResponse("10_jina2.html", context)
