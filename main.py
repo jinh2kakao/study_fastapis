@@ -69,6 +69,20 @@ def main_html_context(request: Request):
     }
     return templates.TemplateResponse("main_context.html", context)
 
+
+@app.get("/user_list")
+def user_list(request: Request):
+    # 템플릿에 전달할 데이터
+    context = {
+        "request": request,
+        "users": [
+            {"name": "Alice", "age": 25, "city": "Seoul"},
+            {"name": "Bob", "age": 30, "city": "Busan"},
+            {"name": "Charlie", "age": 28, "city": "Daegu"}
+        ]
+    }
+    return templates.TemplateResponse("users/list.html", context)
+
 # 정적 파일 설정
 from fastapi.staticfiles import StaticFiles
 # 정적 파일(이미지, CSS, JS 등)을 제공하기 위한 설정
