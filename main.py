@@ -91,3 +91,28 @@ app.mount("/images", StaticFiles(directory="resources/images"))
 app.mount("/css", StaticFiles(directory="resources/css"))
 
 pass
+
+@app.get("/jina2")
+def jina2(request: Request):
+    # 템플릿에 전달할 데이터
+    context = {
+        "request": request,
+        "products": [
+            {
+                "name": "Laptop",
+                "price": 1200,
+                "tags": ["electronics", "office"]
+            },
+            {
+                "name": "Smartphone",
+                "price": 800,
+                "tags": ["mobile", "electronics"]
+            },
+            {
+                "name": "Keyboard",
+                "price": 100,
+                "tags": ["accessories"]
+            }
+        ]
+    }
+    return templates.TemplateResponse("../quests/10_jina2.html", context)
