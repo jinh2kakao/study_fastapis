@@ -7,7 +7,7 @@ INSERT INTO todos (item)
 VALUES 
     ('Learn SQL3');
 
-SELECT id, item FROM todos;
+SELECT id, item FROM todos WHERE id = 'ff060e83-2db2-4566-b367-adac7998251b';
 
 UPDATE todos
 SET item = 'Learn Advanced SQL'

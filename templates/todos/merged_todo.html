@@ -24,13 +24,12 @@
     <main class="container">
         <hr>
         <section class="container-fluid">
-            <form method="post">
+            <form method="post" action="/todos/">
                 <div class="col-auto">
                     <div class="input-group mb-3">
                         <input aria-describedby="button-addon2" aria-label="Add a todo" class="form-control" name="item"
-                               placeholder="Purchase Packt's Python workshop course" type="text"
-                               value=""/>
-                        <input class="form-control" name="item_temp" value="temporary"/>
+                                placeholder="Purchase Packt's Python workshop course" type="text"
+                                value=""/>
                         <button class="btn btn-outline-primary" data-mdb-ripple-color="dark" id="button-addon2"
                                 type="submit">
                             Add Todo
@@ -39,31 +38,27 @@
                 </div>
             </form>
         </section>
-
+        {% if todo %}
         <article class="card container-fluid">
             <br/>
-            <h4>Todo ID: 1 </h4>
+            <h4>Todo ID:  {{ todo[0] }}  </h4>
             <p>
                 <strong>
-                    Item: Sample Todo Item
+                    Item:  {{ todo[1] }}
                 </strong>
             </p>
         </article>
-
+        {% endif %}
         <section class="container-fluid">
             <h2 align="center">Todos</h2>
             <br>
             <div class="card">
                 <ul class="list-group list-group-flush">
+                    {% for todo in todos %}
                     <li class="list-group-item">
-                        1. <a href="/todo/1"> First todo item </a>
+                        {{ loop.index }} <a href="/todos/{{ todo[0] }}"> {{ todo[1] }} </a> <a href="/todos/delete/{{ todo[0] }}"> delete button </a>
                     </li>
-                    <li class="list-group-item">
-                        2. <a href="/todo/2"> Second todo item </a>
-                    </li>
-                    <li class="list-group-item">
-                        3. <a href="/todo/3"> Third todo item </a>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
         </section>
