@@ -5,6 +5,10 @@ from fastapi import Request
 # 'app'은 전체 웹 애플리케이션을 관리하는 객체입니다.
 app = FastAPI()
 
+# roudtes 폴더의 todos.py 모듈에서 정의한 라우터를 임포트
+from routes.todos import router as todos_router
+app.include_router(todos_router, prefix="/todos")
+
 # ==========================================
 # Case 1: 기본 JSON 응답 (API 서버의 기본 동작)
 # ==========================================
