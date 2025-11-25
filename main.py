@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi import Request
 
 # 1. FastAPI 인스턴스 생성
 # 'app'은 전체 웹 애플리케이션을 관리하는 객체입니다.
@@ -90,8 +91,6 @@ from fastapi.staticfiles import StaticFiles
 app.mount("/images", StaticFiles(directory="resources/images"))
 app.mount("/css", StaticFiles(directory="resources/css"))
 
-templates = Jinja2Templates(directory="quests")
-
 @app.get("/jina2")
 def jina2(request: Request):
     # 템플릿에 전달할 데이터
@@ -116,3 +115,26 @@ def jina2(request: Request):
         ]
     }
     return templates.TemplateResponse("10_jina2.html", context)
+
+# http://localhost:8000/board/detail_json?title=Third%20Post&content=This%20is%20the%20third%20post
+@app.get("/board/detail_json")
+async def board_details_json(request: Request):
+    # 템플릿에 전달할 데이터
+    params = dict(request.query_params)
+    return {"title":params['title'], "content":params['content']}
+
+@app.post("/board/detail_post_json")
+async def board_details_post_json(request: Request):
+    # 템플릿에 전달할 데이터
+    params = dict(await request.form())
+    return {"title":params['title'], "content":params['content']}
+
+# http://localhost:8000/board/detail_html/{detail_id}
+@app.get("/board/detail_html/{detail_id}}")
+async def board_details_html(request: Request, detail_id):
+    return templates.TemplateResponse("boards/detail.html", {"request": request})
+
+@app.get("/board/detail_html")
+async def board_details_html(request: Request):
+    return templates.TemplateResponse("boards/detail.html", {"request": request})
+
