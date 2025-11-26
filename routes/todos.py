@@ -7,6 +7,28 @@ router = APIRouter()
 
 templates = Jinja2Templates(directory="templates")
 
+@router.post("/update/{todo_id}")
+async def update_todo_item(request: Request, todo_id: str):
+    params = await request.form()
+    conn = get_db_connection()
+    with conn.cursor() as cursor:
+        cursor.execute(f"""UPDATE todos 
+                        SET item = '{params['item']}',
+                            updated_at = CURRENT_TIMESTAMP
+                        WHERE id = '{todo_id}';""")
+        conn.commit()
+        
+        cursor.execute("""SELECT id, item
+                        from todos ORDER BY created_at ASC""")
+        todos = cursor.fetchall()
+    conn.close()
+    
+    context = {
+        "request": request,
+        "todos": todos
+    }
+    return templates.TemplateResponse("/todos/merged_todo.html", context)
+
 @router.get("/delete/{todo_id}")
 def delete_todo_item(request: Request, todo_id: str):
     conn = get_db_connection()
@@ -15,7 +37,7 @@ def delete_todo_item(request: Request, todo_id: str):
         conn.commit()
         
         cursor.execute("""SELECT id, item
-                        from todos""")
+                        from todos ORDER BY created_at ASC""")
         todos = cursor.fetchall()
     conn.close()
     
@@ -35,7 +57,7 @@ async def add_todo_to_db(request: Request):
                         VALUES ('{params['item']}');""")
         conn.commit()
         cursor.execute("""SELECT id, item
-                        from todos""")
+                        from todos ORDER BY created_at ASC""")
         todos = cursor.fetchall()
     conn.close()
 
@@ -56,7 +78,7 @@ async def get_todo(request: Request, todo_id: str):
         todo = cursor.fetchone()
         
         cursor.execute("""SELECT id, item
-                        from todos""")
+                        from todos ORDER BY created_at ASC""")
         todos = cursor.fetchall()
     conn.close()
     
@@ -73,7 +95,7 @@ async def get_todos_html(request: Request):
     conn = get_db_connection()
     with conn.cursor(cursor_factory=DictCursor) as cursor:
         cursor.execute("""SELECT id, item
-                        from todos""")
+                        from todos ORDER BY created_at ASC""")
         todos = cursor.fetchall()
     conn.close()
     

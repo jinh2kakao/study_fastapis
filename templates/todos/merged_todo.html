@@ -24,12 +24,26 @@
     <main class="container">
         <hr>
         <section class="container-fluid">
+            {% if todo %}
+            <form method="post" action="/todos/update/{{ todo[0] }}">
+                <div class="col-auto">
+                    <div class="input-group mb-3">
+                        <input aria-describedby="button-addon2" aria-label="Update a todo" class="form-control" name="item"
+                               placeholder="Update your todo" type="text"
+                               value="{{ todo[1] }}"/> <button class="btn btn-outline-success" data-mdb-ripple-color="dark" id="button-addon2"
+                                type="submit">
+                            Update Todo </button>
+                        <a href="/todos/" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </div>
+            </form>
+            {% else %}
             <form method="post" action="/todos/">
                 <div class="col-auto">
                     <div class="input-group mb-3">
                         <input aria-describedby="button-addon2" aria-label="Add a todo" class="form-control" name="item"
-                                placeholder="Purchase Packt's Python workshop course" type="text"
-                                value=""/>
+                               placeholder="Purchase Packt's Python workshop course" type="text"
+                               value=""/>
                         <button class="btn btn-outline-primary" data-mdb-ripple-color="dark" id="button-addon2"
                                 type="submit">
                             Add Todo
@@ -37,6 +51,7 @@
                     </div>
                 </div>
             </form>
+            {% endif %}
         </section>
         {% if todo %}
         <article class="card container-fluid">
